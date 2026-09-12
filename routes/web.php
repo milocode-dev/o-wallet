@@ -3,7 +3,8 @@
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\WalletController;
 
 Route::get('/', function () {
@@ -18,6 +19,8 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.action');
 Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::resource('wallet', WalletController::class);
+    Route::resource('category', CategoryController::class);
+    Route::resource('transaction', TransactionController::class);
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function() {
