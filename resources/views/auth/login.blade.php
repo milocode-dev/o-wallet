@@ -11,16 +11,20 @@
     <main class="rounded-xl shadow-2xl bg-white">
         <div class="p-4">
             <div class="text-center mb-6">
+                @if (session('success'))
+                    <div class="text-emerald-600">
+                        {{ session('success') }}
+                    </div>
+                @endif
                 <h1 class="text-2xl font-bold">Selamat Datang!</h1>
                 <p class="font-light text-slate-500">Masuk dengan akun pengguna.</p>
             </div>
 
-            @if (@session('error'))
-                <div class="text-red-500">
+            @if (session('error'))
+                <div class="text-red-500 mb-3 text-center">
                     {{ session('error') }}
                 </div>
             @endif
-
             <form method="POST" action="{{ route('login.action') }}">
                 @csrf 
 

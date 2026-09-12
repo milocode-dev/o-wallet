@@ -36,18 +36,16 @@ class AuthController extends Controller
     public function login(Request $request) {
         $credentials = $request->validate([
             'email' => 'email|required',
-            'password' => 'string|min:8|required',
+            'password' => 'string|required',
         ]);
 
         if(Auth::attempt($credentials)) {
             $request->session()->regenerate();
  
-            return redirect()->route('dashboard');
+            return redirect()->route('wallet.index')->with('success', 'Berhasil masuk ke aplikasi.');
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        return redirect()->route('login')->with('error', 'E-mail atau password salah.');
     }
 
     public function logout(Request $request) {
