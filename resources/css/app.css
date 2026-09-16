@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 @import 'tailwindcss';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -8,4 +9,44 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --font-display: 'Manrope', ui-sans-serif, sans-serif;
+    --font-body: 'Inter', ui-sans-serif, sans-serif;
+
+    --color-forest-50: #F4FBF6;
+    --color-forest-100: #E3F3E8;
+    --color-forest-150: #D5ECDD;
+    --color-forest-200: #C6E7D1;
+    --color-forest-300: #9ED3B3;
+    --color-forest-400: #6FB98F;
+    --color-forest-500: #4C9C72;
+    --color-forest-600: #397D5B;
+    --color-forest-700: #2E6249;
+    --color-forest-800: #274F3C;
+    --color-forest-900: #1E3B2D;
+    --color-forest-950: #12271D;
+
+    --color-clay-50: #FBF1EF;
+    --color-clay-100: #F4DFDA;
+    --color-clay-500: #B85C4E;
+    --color-clay-600: #9C4A3E;
+    --color-clay-700: #7E3A30;
+
+    --color-amber-400: #CE9A45;
+    --color-amber-500: #B98735;
+
+    --radius-2xl: 1.1rem;
+    --radius-3xl: 1.6rem;
 }
+
+.tnum { font-variant-numeric: tabular-nums; }
+
+.weave {
+    background-image: repeating-linear-gradient(115deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 14px);
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: #C6E7D1; border-radius: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+[x-cloak] { display: none !important; }

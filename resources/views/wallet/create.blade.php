@@ -1,30 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Create Wallet Page</title>
-    @vite(['resources/css/app.css', 'resources/js/app.cs'])
-</head>
-<body>
-    <form action="{{ route('wallet.store') }}" method="POST">
-        @csrf
+@extends('layouts.app')
 
-        <label for="wallet_name" class="block">Nama Dompet</label>
-        <input type="text" id="wallet_name" name="wallet_name" class="border">
+@section('title', 'Tambah Dompet')
 
-        <label for="type" class="block">Type</label>
-        <select name="type" id="type">
-            @foreach ($walletType as $value => $label)
-                <option value="{{ $value }}">{{ $label }}</option>
-            @endforeach
-        </select>
+@section('content')
+<div class="max-w-xl mx-auto">
+  <a href="{{ route('wallet.index') }}" class="flex items-center gap-1.5 text-sm text-forest-600 hover:text-forest-800 font-medium mb-6 w-fit">
+    <x-icon name="chevron-left" class="w-4 h-4" />
+    Batal
+  </a>
 
-        <label for="nominal" class="block">Nominal</label>
-        <input type="number" id="nominal" name="nominal" class="border">
+  <div class="bg-white rounded-2xl border border-forest-100 p-6 md:p-8">
+    <h1 class="font-display text-xl font-bold text-forest-950">Tambah Dompet Baru</h1>
+    <p class="text-sm text-forest-500 mt-1">Isi informasi dompet di bawah ini.</p>
 
-        <button type="submit" class="cursor-pointer border">Tambah data</button>
+    <form method="POST" action="{{ route('wallet.store') }}" class="mt-6">
+      @csrf
+      @include('wallet.partials.form')
+
+      <div class="mt-8 flex gap-3">
+        <a href="{{ route('wallet.index') }}" class="flex-1 text-center rounded-xl border border-forest-150 text-forest-700 font-medium text-sm py-2.5 hover:bg-forest-50 transition-colors">Batal</a>
+        <button type="submit" class="flex-1 rounded-xl bg-forest-700 text-white font-semibold text-sm py-2.5 hover:bg-forest-600 transition-colors">Simpan Dompet</button>
+      </div>
     </form>
-</body>
-</html>
+  </div>
+</div>
+@endsection

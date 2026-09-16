@@ -39,14 +39,14 @@ class CategoryController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'string|required',
-            'type' => 'string|required',
+            'type' => 'string|required|in:income,expense',
         ]);
 
         $validatedData['user_id'] = Auth::user()->id;
 
         Category::create($validatedData);
 
-        return redirect('category');
+        return redirect()->route('category.index')->with('success', 'Kategori berhasil ditambahkan.');
     }
 
     /**
@@ -64,6 +64,10 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
+        if ($category->user_id !== Auth::id()) {
+            abort(403, 'Akses ditolak! Anda bukan pemilik kategori ini.');
+        }
+
         $categoryType = [
             'income' => 'Income',
             'expense' => 'Expense',
@@ -77,15 +81,20 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $category = Category::findOrFail($id);
+
+        if ($category->user_id !== Auth::id()) {
+            abort(403, 'Akses ditolak! Anda bukan pemilik kategori ini.');
+        }
+
         $validatedData = $request->validate([
             'name' => 'string|required',
-            'type' => 'string|required',
+            'type' => 'string|required|in:income,expense',
         ]);
 
-        $category = Category::findOrFail($id);
         $category->update($validatedData);
 
-        return redirect('category');
+        return redirect()->route('category.index')->with('success', 'Kategori berhasil diperbarui.');
     }
 
     /**
@@ -95,8 +104,12 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
+        if ($category->user_id !== Auth::id()) {
+            abort(403, 'Akses ditolak! Anda bukan pemilik kategori ini.');
+        }
+
         $category->delete();
 
-        return redirect('category');
+        return redirect()->route('category.index')->with('success', 'Kategori berhasil dihapus.');
     }
 }

@@ -1,49 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login Page</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="min-h-screen flex justify-center items-center bg-gray-100">
-    <main class="rounded-xl shadow-2xl bg-white">
-        <div class="p-4">
-            <div class="text-center mb-6">
-                @if (session('success'))
-                    <div class="text-emerald-600">
-                        {{ session('success') }}
-                    </div>
-                @endif
-                <h1 class="text-2xl font-bold">Selamat Datang!</h1>
-                <p class="font-light text-slate-500">Masuk dengan akun pengguna.</p>
-            </div>
+@extends('layouts.guest')
 
-            @if (session('error'))
-                <div class="text-red-500 mb-3 text-center">
-                    {{ session('error') }}
-                </div>
-            @endif
-            <form method="POST" action="{{ route('login.action') }}">
-                @csrf 
+@section('title', 'Login')
 
-                <div class="mb-2">
-                    <label for="email" class="block text-slate-700 font-bold">E-mail</label>
-                    <input type="email" id="email" name="email" placeholder="Isi e-mail anda" class="focus:outline-none border-b w-full p-1">
-                </div>
+@section('content')
+  <div class="text-center mb-6">
+    <h1 class="font-display text-xl font-bold text-forest-950">Selamat Datang!</h1>
+    <p class="text-sm text-forest-500 mt-1">Masuk dengan akun pengguna.</p>
+  </div>
 
-                <div class="mb-6">
-                    <label for="password" class="block text-slate-700 font-bold">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Isi password anda" class="focus:outline-none border-b w-full p-1">
-                </div>
+  @if (session('success'))
+    <div class="mb-4 rounded-xl bg-forest-100 text-forest-700 text-sm font-medium px-4 py-3 text-center">
+      {{ session('success') }}
+    </div>
+  @endif
+  @if (session('error'))
+    <div class="mb-4 rounded-xl bg-clay-50 text-clay-700 text-sm font-medium px-4 py-3 text-center">
+      {{ session('error') }}
+    </div>
+  @endif
 
-                <div>
-                    <button type="submit" class="cursor-pointer bg-emerald-700 text-white p-1.5 rounded-md w-20">Login</button>
-                    <a href="{{ route('register') }}" class="text-blue-400"> <span class="text-black">Belum punya akun?</span> Daftar sekarang!</a>
-                </div>
-            </form>
-        </div>
-    </main>
-</body>
-</html>
+  <form method="POST" action="{{ route('login.action') }}">
+    @csrf
+
+    <div class="mb-4">
+      <label for="email" class="block text-sm font-medium text-forest-800 mb-1.5">E-mail</label>
+      <input type="email" id="email" name="email" placeholder="nama@email.com" value="{{ old('email') }}"
+             class="w-full rounded-xl border border-forest-150 px-3.5 py-2.5 text-sm focus:border-forest-500 focus:ring-1 focus:ring-forest-500 outline-none" />
+      @error('email')
+        <p class="mt-1.5 text-xs text-clay-600">{{ $message }}</p>
+      @enderror
+    </div>
+
+    <div class="mb-6">
+      <label for="password" class="block text-sm font-medium text-forest-800 mb-1.5">Password</label>
+      <input type="password" id="password" name="password" placeholder="Isi password anda"
+             class="w-full rounded-xl border border-forest-150 px-3.5 py-2.5 text-sm focus:border-forest-500 focus:ring-1 focus:ring-forest-500 outline-none" />
+      @error('password')
+        <p class="mt-1.5 text-xs text-clay-600">{{ $message }}</p>
+      @enderror
+    </div>
+
+    <button type="submit" class="w-full rounded-xl bg-forest-700 text-white font-semibold text-sm py-2.5 hover:bg-forest-600 transition-colors">
+      Login
+    </button>
+
+    <p class="text-center text-sm text-forest-600 mt-4">
+      Belum punya akun?
+      <a href="{{ route('register') }}" class="font-medium text-forest-700 hover:text-forest-800">Daftar sekarang</a>
+    </p>
+  </form>
+@endsection

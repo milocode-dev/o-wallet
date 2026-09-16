@@ -14,15 +14,18 @@ Route::get('/', function () {
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.action');
 Route::get('/login', [AuthController::class, 'showlogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.action');
+Route::post('/login', [AuthController::class, 'login'])->name('login.action')->middleware('throttle:6,1');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'active'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::resource('wallet', WalletController::class);
     Route::resource('category', CategoryController::class);
+    Route::post('/transaction/transfer', [TransactionController::class, 'transfer'])->name('transaction.transfer');
     Route::resource('transaction', TransactionController::class);
-});
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function() {
-    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.admin');
+    Route::middleware(['admin'])->prefix('admin')->group(function () {
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.admin');
+        Route::get('/users', [AdminController::class, 'users'])->name('admin.users.index');
+        Route::patch('/users/{user}/toggle-active', [AdminController::class, 'toggleActive'])->name('admin.users.toggle-active');
+    });
 });

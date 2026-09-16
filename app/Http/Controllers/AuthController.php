@@ -16,14 +16,14 @@ class AuthController extends Controller
 
     public function register(Request $request) {
         $validatedData = $request->validate([
-            'name' => 'string|max:255',
+            'name' => 'string|max:255|required',
             'email' => 'email|unique:users,email|required',
-            'password' => 'string|min:8|required',
+            'password' => 'string|min:8|required|confirmed',
         ]);
 
         // Hash password
         $validatedData['password'] = Hash::make($validatedData['password']);
-        
+
         User::create($validatedData);
 
         return redirect()->route('login')->with('success', 'Berhasil register!');
@@ -40,8 +40,14 @@ class AuthController extends Controller
         ]);
 
         if(Auth::attempt($credentials)) {
+            if (! Auth::user()->is_active) {
+                Auth::logout();
+
+                return redirect()->route('login')->with('error', 'Akun Anda telah dinonaktifkan oleh admin.');
+            }
+
             $request->session()->regenerate();
- 
+
             return redirect()->route('wallet.index')->with('success', 'Berhasil masuk ke aplikasi.');
         }
 
@@ -52,9 +58,9 @@ class AuthController extends Controller
         Auth::logout();
 
         $request->session()->invalidate();
- 
+
         $request->session()->regenerateToken();
-    
+
         return redirect('login');
     }
 }

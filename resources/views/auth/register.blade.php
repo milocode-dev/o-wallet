@@ -1,44 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Register Page</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="min-h-screen flex justify-center items-center bg-gray-100">
-    <main class="rounded-xl shadow-2xl bg-white">
-        <div class="p-4">
-            <div class="text-center mb-6">
-                <h1 class="text-2xl font-bold">Selamat Datang!</h1>
-                <p class="font-light text-slate-500">Masuk dengan akun pengguna.</p>
-            </div>
+@extends('layouts.guest')
 
-            <form method="POST" action="{{ route('register.action') }}">
-                @csrf
+@section('title', 'Daftar Akun')
 
-                <div class="mb-2">
-                    <label for="name" class="block text-slate-700 font-bold">Nama</label>
-                    <input type="text" id="name" name="name" placeholder="Isi nama anda" class="focus:outline-none border-b w-full p-1">
-                </div>  
+@section('content')
+  <div class="text-center mb-6">
+    <h1 class="font-display text-xl font-bold text-forest-950">Buat Akun Baru</h1>
+    <p class="text-sm text-forest-500 mt-1">Mulai catat keuanganmu di o-wallet.</p>
+  </div>
 
-                <div class="mb-2">
-                    <label for="email" class="block text-slate-700 font-bold">E-mail</label>
-                    <input type="email" id="email" name="email" placeholder="Isi e-mail anda" class="focus:outline-none border-b w-full p-1">
-                </div>
+  <form method="POST" action="{{ route('register.action') }}">
+    @csrf
 
-                <div class="mb-6">
-                    <label for="password" class="block text-slate-700 font-bold">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Isi password anda" class="focus:outline-none border-b w-full p-1">
-                </div>
+    <div class="mb-4">
+      <label for="name" class="block text-sm font-medium text-forest-800 mb-1.5">Nama</label>
+      <input type="text" id="name" name="name" placeholder="Isi nama anda" value="{{ old('name') }}"
+             class="w-full rounded-xl border border-forest-150 px-3.5 py-2.5 text-sm focus:border-forest-500 focus:ring-1 focus:ring-forest-500 outline-none" />
+      @error('name')
+        <p class="mt-1.5 text-xs text-clay-600">{{ $message }}</p>
+      @enderror
+    </div>
 
-                <div class="">
-                    <button type="submit" class="cursor-pointer bg-emerald-700 text-white p-1.5 rounded-md w-20">Register</button>
-                    <a href="{{ route('login') }}" class="text-blue-400"> <span class="text-black">Sudah punya akun?</span> Login disini.</a>
-                </div>
-            </form>
-        </div>
-    </main>
-</body>
-</html>
+    <div class="mb-4">
+      <label for="email" class="block text-sm font-medium text-forest-800 mb-1.5">E-mail</label>
+      <input type="email" id="email" name="email" placeholder="nama@email.com" value="{{ old('email') }}"
+             class="w-full rounded-xl border border-forest-150 px-3.5 py-2.5 text-sm focus:border-forest-500 focus:ring-1 focus:ring-forest-500 outline-none" />
+      @error('email')
+        <p class="mt-1.5 text-xs text-clay-600">{{ $message }}</p>
+      @enderror
+    </div>
+
+    <div class="mb-6">
+      <label for="password" class="block text-sm font-medium text-forest-800 mb-1.5">Password</label>
+      <input type="password" id="password" name="password" placeholder="Minimal 8 karakter"
+             class="w-full rounded-xl border border-forest-150 px-3.5 py-2.5 text-sm focus:border-forest-500 focus:ring-1 focus:ring-forest-500 outline-none" />
+      @error('password')
+        <p class="mt-1.5 text-xs text-clay-600">{{ $message }}</p>
+      @enderror
+    </div>
+
+    <div class="mb-6">
+      <label for="password_confirmation" class="block text-sm font-medium text-forest-800 mb-1.5">Konfirmasi Password</label>
+      <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Ulangi password anda"
+             class="w-full rounded-xl border border-forest-150 px-3.5 py-2.5 text-sm focus:border-forest-500 focus:ring-1 focus:ring-forest-500 outline-none" />
+    </div>
+
+    <button type="submit" class="w-full rounded-xl bg-forest-700 text-white font-semibold text-sm py-2.5 hover:bg-forest-600 transition-colors">
+      Register
+    </button>
+
+    <p class="text-center text-sm text-forest-600 mt-4">
+      Sudah punya akun?
+      <a href="{{ route('login') }}" class="font-medium text-forest-700 hover:text-forest-800">Login di sini</a>
+    </p>
+  </form>
+@endsection

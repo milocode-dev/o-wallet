@@ -1,43 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dashboard Page</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="min-h-screen flex justify-center items-center">
-    <div>
-        <div>
-            <h1>Welcome to user dashboard, {{ $user->name }}</h1>
-        </div>
+@extends('layouts.app')
 
-        <form action="{{ route('logout') }}" method="POST">
-            @csrf
+@section('title', 'Dashboard')
 
-            <button type="submit" class="p-1 border mb-2 cursor-pointer rounded-md">Logout</button>
-        </form>
+@section('content')
+<div class="max-w-6xl mx-auto">
+  <h1 class="font-display text-2xl md:text-3xl font-bold text-forest-950">Halo, {{ $user->name }}</h1>
+  <p class="mt-1.5 text-forest-600">
+    Total saldo dari {{ $wallets->count() }} dompet:
+    <span class="font-semibold text-forest-800 tnum">Rp {{ number_format($wallets->sum('nominal'), 0, ',', '.') }}</span>
+  </p>
 
-        <div class="flex gap-2">
-            @foreach ($wallets as $wallet)
-                <a href="{{ route('wallet.show', $wallet->id) }}">
-                    <div class="w-25 border rounded-md p-1.5">
-                        <h1>{{ $wallet->wallet_name }}</h1>
-                        <p>{{ $wallet->type }}</p>
-                        <p>{{ $wallet->nominal }}</p>
-                    </div>
-                </a>
-            @endforeach
+  <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
 
-            <a href="{{ route('wallet.create') }}">
-                <div class="w-25 border rounded-md p-1.5">
-                    <h1>Logo Tambah</h1>
-                    <p>Tambah dompet?</p>
-                    <p>Text</p>
-                </div>
-            </a>
-        </div>
-    </div>
-</body>
-</html>
+    @foreach ($wallets as $wallet)
+      @include('wallet.partials.card', ['wallet' => $wallet])
+    @endforeach
+
+    <a href="{{ route('wallet.create') }}"
+       class="rounded-2xl p-5 border-2 border-dashed border-forest-200 flex flex-col items-center justify-center gap-2 text-forest-500 hover:border-forest-400 hover:text-forest-600 hover:bg-forest-100/60 transition-colors min-h-[168px]">
+      <div class="w-10 h-10 rounded-full bg-forest-100 flex items-center justify-center">
+        <x-icon name="plus" class="w-5 h-5" />
+      </div>
+      <span class="text-sm font-medium">Tambah Dompet</span>
+    </a>
+
+  </div>
+
+  @if ($wallets->isEmpty())
+    <p class="mt-4 text-sm text-forest-500">Kamu belum punya dompet. Yuk tambahkan dompet pertamamu.</p>
+  @endif
+</div>
+@endsection
